@@ -38,4 +38,13 @@ public class StudentService {
     public Optional<Student> findByEmail(String email){
         return studentRepository.findByEmail(email);
     }
+
+    public void deleteStudentById(Long id) {
+        boolean exists = studentRepository.existsById(id);
+
+        if(!exists)
+            throw new IllegalStateException("User doesn't exists");
+
+        studentRepository.deleteById(id);
+    }
 }
