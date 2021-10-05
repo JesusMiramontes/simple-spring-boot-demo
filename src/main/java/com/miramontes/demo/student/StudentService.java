@@ -21,10 +21,21 @@ public class StudentService {
     }
 
     public void addNewStudent(Student student) {
-        Optional<Student> studentByEmail = studentRepository.findByEmail(student.getEmail());
-        if(studentByEmail.isPresent())
+        if (findByEmail(student.getEmail()).isPresent())
             throw new IllegalStateException("email taken");
 
         studentRepository.save(student);
+    }
+
+    public void deleteStudentByEmail(Student student){
+        Optional<Student> optionalStudent = findByEmail(student.getEmail());
+        if(!optionalStudent.isPresent())
+            throw new IllegalStateException("User doesn't exists");
+
+        studentRepository.delete(optionalStudent.get());
+    }
+
+    public Optional<Student> findByEmail(String email){
+        return studentRepository.findByEmail(email);
     }
 }

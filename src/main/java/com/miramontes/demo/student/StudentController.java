@@ -25,4 +25,9 @@ public class StudentController {
     public void insertStudent(@RequestBody Student student){
         studentService.addNewStudent(student);
     }
+
+    @DeleteMapping
+    public void deleteStudentByEmail(@RequestBody Student student){
+        studentService.deleteStudentByEmail(student);
+    }
 }
