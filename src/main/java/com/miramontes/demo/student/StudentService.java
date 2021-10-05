@@ -40,11 +40,25 @@ public class StudentService {
     }
 
     public void deleteStudentById(Long id) {
-        boolean exists = studentRepository.existsById(id);
-
-        if(!exists)
-            throw new IllegalStateException("User doesn't exists");
-
+        studentExistsById(id);
         studentRepository.deleteById(id);
+    }
+
+    public void updateStudent(Long id, Student student) {
+        studentExistsById(id);
+        Student storedStudent = studentRepository.findById(id).get();
+        storedStudent.setName(student.getName());
+        storedStudent.setDob(student.getDob());
+
+        if(findByEmail(student.getEmail()).isPresent())
+            throw new IllegalStateException("Email taken");
+
+        storedStudent.setEmail(student.getEmail());
+        studentRepository.save(storedStudent);
+    }
+
+    public void studentExistsById(Long id){
+        if(!studentRepository.existsById(id))
+            throw new IllegalStateException("User doesn't exists");
     }
 }
